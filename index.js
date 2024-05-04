@@ -1,289 +1,189 @@
-// ! 1 - Hàm tìm UCLN của 2 số
-const gcd = (a, b) => {
-  if (typeof a !== "number" || typeof b !== "number") {
-    throw new Error("Tham số phải là số");
-  }
-  if (b === 0) {
-    return a;
-  } else {
-    return gcd(b, a % b);
-  }
-};
-
-//! 2 - Hàm kiểm tra 2 số có phải là số nguyên tố cùng nhau hay không
-const kiemTra2soNTCungNhau = (a, b) => {
-  return gcd(a, b) === 1;
-};
-
-//! 3 - Hàm tính a mũ -1 mod b (Tìm phần tử nghịch đảo)
-const phanTuNghichDao = (a, b) => {
-  if (
-    typeof a !== "number" ||
-    typeof b !== "number" ||
-    !kiemTra2soNTCungNhau(a, b)
-  ) {
-    throw new Error(
-      "Tham số đầu vào không hợp lệ, không thể tìm phần tử nghịch đảo"
-    );
-  }
-
-  let r_i_tru_2 = b;
-  let r_i_tru_1 = a;
-
-  let x_i_tru_2 = 0;
-  let x_i_tru_1 = 1;
-
-  for (let i = 1; r_i_tru_1 !== 1; i++) {
-    let q = Math.floor(r_i_tru_2 / r_i_tru_1);
-    // console.log("r_i_tru_2 | r_i_tru_1 :: ", r_i_tru_2, r_i_tru_1);
-
-    let tmp_r = r_i_tru_1;
-    r_i_tru_1 = r_i_tru_2 - q * r_i_tru_1;
-    r_i_tru_2 = tmp_r;
-
-    let tmp_x = x_i_tru_1;
-    x_i_tru_1 = x_i_tru_2 - q * x_i_tru_1;
-    x_i_tru_2 = tmp_x;
-  }
-
-  return x_i_tru_1;
-};
-
-// console.log("phanTuNghichDao(18,23) = 9 =  ", phanTuNghichDao(18, 23));
-// console.log("phanTuNghichDao(18,23) = 9 =  ", phanTuNghichDao(6, 8)); // Không thể tìm phần tử nghịch đảo vì không phải 2 số nguyên tố cùng nhau
-
-//! 4 - Hàm tính a^b mod n
-
-function he2sangHe10(number) {
-  if (number === 0) {
-    return "0";
-  }
-
-  let binary = "";
-
-  while (number > 0) {
-    binary = (number % 2) + binary;
-    number = Math.floor(number / 2);
-  }
-
-  // return Number(binary);
-  return binary;
-}
-
-const a_mu_b_mod_n = (a, b, n) => {
-  if (typeof a !== "number" || typeof b !== "number" || typeof n !== "number") {
-    throw new Error("Tham số đầu vào không hợp lệ");
-  }
-  // console.log(`${a}^${b} mod ${n} = `);
-
-  if (b === n) {
-    return a % n;
-  }
-
-  const binaryArray = he2sangHe10(b).split("");
-
-  let f = 1;
-  for (let i = 0; i < binaryArray.length; i++) {
-    f = (f * f) % n;
-
-    if (binaryArray[i] === "1") {
-      f = (f * a) % n;
-    }
-  }
-
-  return f;
-};
-
-// console.log(a_mu_b_mod_n(5, 37, 23));
-// console.log(a_mu_b_mod_n(7, 560, 561));
-// console.log(a_mu_b_mod_n(3, 5, 5));
-
-//! 5 - Hàm mã hóa và giải mã theo thuật toán Caesar
-
-// Ma hoa: Ek (i) = (i + k) mod N
-// Ma hoa: Dk (i) = (i - k) mod N
-
-const VIETNAMESE_ALPHABET =
-  "aAáÁạẠàÀảẢãÃăĂắẮặẶằẰẳẲẵẴâÂấẤậẬầẦẩẨẫẪbBcCdDđĐeEéÉẹẸèÈẻẺẽẼêÊếẾệỆềỀểỂễỄgGhHiIíÍịỊìÌỉỈĩĨkKlLmMnNoOóÓọỌòÒỏỎõÕôÔốỐộỘồỒổỔỗỖơƠớỚợỢờỜởỞỡỠpPqQrRsStTuUúÚụỤùÙủỦũŨưƯứỨựỰừỪửỬữỮvVxXyYýÝỵỴỳỲỷỶỹỸ"; // Z_178
-
-const N = VIETNAMESE_ALPHABET.length;
-
-const maHoa = (plaintext = "", key) => {
-  if (typeof key !== "number") {
-    throw new Error("Tham số đầu vào không hợp lệ");
-  }
-
-  plaintext = plaintext.trim();
-
-  let ciphertext = "";
-
-  for (let i = 0; i < plaintext.length; i++) {
-    const index = VIETNAMESE_ALPHABET.indexOf(plaintext[i]);
-    if (index === -1) {
-      ciphertext += plaintext[i];
-    } else {
-      const newIndex = (index + key) % N;
-      ciphertext += VIETNAMESE_ALPHABET[newIndex];
-    }
-  }
-
-  return ciphertext;
-};
-
-const giaMa = (ciphertext = "", key) => {
-  if (typeof key !== "number") {
-    throw new Error("Tham số đầu vào không hợp lệ");
-  }
-
-  ciphertext = ciphertext.trim();
-
-  let plaintext = "";
-
-  for (let i = 0; i < ciphertext.length; i++) {
-    const index = VIETNAMESE_ALPHABET.indexOf(ciphertext[i]);
-    if (index === -1) {
-      plaintext += ciphertext[i];
-    } else {
-      const newIndex = (index - key) % N;
-      plaintext += VIETNAMESE_ALPHABET[newIndex];
-    }
-  }
-
-  return plaintext;
-};
-
-const plaintext1 = "HANOI";
-const plaintext2 = "Việt Nam";
-const plaintext3 = "Dương Văn Dũng";
-
-const ciphertext1 = maHoa(plaintext1, 3);
-const ciphertext2 = maHoa(plaintext2, 5);
-const ciphertext3 = maHoa(plaintext3, 7);
-
-const plaintext_1 = giaMa(ciphertext1, 3);
-const plaintext_2 = giaMa(ciphertext2, 5);
-const plaintext_3 = giaMa(ciphertext3, 7);
-
-// console.log("=== Mã hóa ===");
-// console.log(`maHoa(${plaintext1},  3) :>> `, ciphertext1);
-// console.log(`maHoa(${plaintext2},  5) :>> `, ciphertext2);
-// console.log(`maHoa(${plaintext3},  7) :>> `, ciphertext3);
-
-// console.log("=== Giải mã ===");
-// console.log(`giaMa(${ciphertext1}, 7); :>> `, plaintext_1);
-// console.log(`giaMa(${ciphertext2}, 7); :>> `, plaintext_2);
-// console.log(`giaMa(${ciphertext3}, 7); :>> `, plaintext_3);
-
-//! 6 - Hàm tạo ra 2 số nguyên tố khác nhau có 6 chữ số
-const ktraSoNguyenTo = (number) => {
-  if (typeof number !== "number" || number !== Math.floor(number)) {
-    throw new Error("Tham số đầu vào không hợp lệ");
-  }
-  for (let i = 2; i <= Math.floor(Math.sqrt(number)); i++) {
-    if (number % i === 0) return false;
-  }
-
-  return number >= 2;
-};
-
-//! 6.1 - Hàm tạo số nguyên tố có 6 chữ số ngẫu nhiên
-const sinhSoNguyenToNgauNhien = () => {
-  let min = 100000;
-  let max = 999999;
-  let randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-  while (!ktraSoNguyenTo(randomNumber)) {
-    randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-  return randomNumber;
-};
-
-//! 7 - Hàm mã hóa và giải mã theo thuật toán Affine
-const sinhKhoaK_Affine = () => {
-  const b = sinhSoNguyenToNgauNhien();
-  let a = sinhSoNguyenToNgauNhien();
-
-  while (!kiemTra2soNTCungNhau(a, N)) {
-    a = sinhSoNguyenToNgauNhien();
-  }
-
-  console.log("sinhKhoaK_Affine: K = {a,b} = ", { a, b });
-
-  return { a, b };
-};
-
-const maHoaAffine = (plaintext = "", a, b) => {
-  if (typeof a !== "number" || typeof b !== "number") {
-    throw new Error("Tham số đầu vào không hợp lệ");
-  }
-
-  plaintext = plaintext.trim();
-
-  let ciphertext = "";
-
-  for (let i = 0; i < plaintext.length; i++) {
-    const index = VIETNAMESE_ALPHABET.indexOf(plaintext[i]);
-    if (index === -1) {
-      ciphertext += plaintext[i];
-    } else {
-      const newIndex = (a * index + b) % N;
-      ciphertext += VIETNAMESE_ALPHABET[newIndex];
-    }
-  }
-
-  return ciphertext;
-};
-
-const giaMaAffine = (ciphertext = "", a, b) => {
-  if (typeof a !== "number" || typeof b !== "number") {
-    throw new Error("Tham số đầu vào không hợp lệ");
-  }
-  ciphertext = ciphertext.trim();
-  let plaintext = "";
-
-  for (let i = 0; i < ciphertext.length; i++) {
-    const index = VIETNAMESE_ALPHABET.indexOf(ciphertext[i]);
-    if (index === -1) {
-      plaintext += ciphertext[i];
-    } else {
-      const newIndex = ((index - b) * phanTuNghichDao(a, N)) % N;
-      plaintext += VIETNAMESE_ALPHABET[newIndex];
-    }
-  }
-  return plaintext;
-};
-
-// console.log("=== Mã hóa ===");
-// const chuoiCanMaHoaAffine = "Dương Văn Dũng, Bắc Giang, Việt Nam";
-// const { a, b } = sinhKhoaK_Affine(); // Tạo khóa K = {a,b} thoa man gcd(a, N) = 1, N = 178
-
-// const c1 = maHoaAffine(chuoiCanMaHoaAffine, a, b);
-// console.log(`maHoaAffine(${chuoiCanMaHoaAffine}, ${a}, ${b}) :: `, c1);
-
-// console.log("\n=== Giải mã ===");
-// const p1 = giaMaAffine(c1, a, b);
-// console.log(`giaMaAffine(${c1}, ${a}, ${b}) :: `, p1);
-
 //! 8 - Hàm mã hóa và giải mã theo thuật toán DES
+
+import { hex2bin, bin2hex, bin2dec } from "./helper.js";
+
+const permute = (k, arr, n) => {
+  let permutation = "";
+  for (let i = 0; i < n; i++) {
+    permutation += k[arr[i] - 1];
+  }
+  return permutation;
+};
+
+const shift_left = (k, nth_shifts) => {
+  let s = "";
+  for (let i = 0; i < nth_shifts; i++) {
+    for (let j = 1; j < k.length; j++) {
+      s += k[j];
+    }
+    s += k[0];
+    k = s;
+    s = "";
+  }
+  return k;
+};
+
+const xor = (a, b) => {
+  let ans = "";
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] === b[i]) {
+      ans += "0";
+    } else {
+      ans += "1";
+    }
+  }
+  return ans;
+};
+
+const initial_perm = [
+  58, 50, 42, 34, 26, 18, 10, 2, 60, 52, 44, 36, 28, 20, 12, 4, 62, 54, 46, 38,
+  30, 22, 14, 6, 64, 56, 48, 40, 32, 24, 16, 8, 57, 49, 41, 33, 25, 17, 9, 1,
+  59, 51, 43, 35, 27, 19, 11, 3, 61, 53, 45, 37, 29, 21, 13, 5, 63, 55, 47, 39,
+  31, 23, 15, 7,
+];
+
+// # Expansion D-box Table
+const exp_d = [
+  32, 1, 2, 3, 4, 5, 4, 5, 6, 7, 8, 9, 8, 9, 10, 11, 12, 13, 12, 13, 14, 15, 16,
+  17, 16, 17, 18, 19, 20, 21, 20, 21, 22, 23, 24, 25, 24, 25, 26, 27, 28, 29,
+  28, 29, 30, 31, 32, 1,
+];
+
+// # Straight Permutation Table
+per = [
+  16, 7, 20, 21, 29, 12, 28, 17, 1, 15, 23, 26, 5, 18, 31, 10, 2, 8, 24, 14, 32,
+  27, 3, 9, 19, 13, 30, 6, 22, 11, 4, 25,
+];
+
+// # S-box Table
+const sbox = [
+  [
+    [14, 4, 13, 1, 2, 15, 11, 8, 3, 10, 6, 12, 5, 9, 0, 7],
+    [0, 15, 7, 4, 14, 2, 13, 1, 10, 6, 12, 11, 9, 5, 3, 8],
+    [4, 1, 14, 8, 13, 6, 2, 11, 15, 12, 9, 7, 3, 10, 5, 0],
+    [15, 12, 8, 2, 4, 9, 1, 7, 5, 11, 3, 14, 10, 0, 6, 13],
+  ],
+
+  [
+    [15, 1, 8, 14, 6, 11, 3, 4, 9, 7, 2, 13, 12, 0, 5, 10],
+    [3, 13, 4, 7, 15, 2, 8, 14, 12, 0, 1, 10, 6, 9, 11, 5],
+    [0, 14, 7, 11, 10, 4, 13, 1, 5, 8, 12, 6, 9, 3, 2, 15],
+    [13, 8, 10, 1, 3, 15, 4, 2, 11, 6, 7, 12, 0, 5, 14, 9],
+  ],
+
+  [
+    [10, 0, 9, 14, 6, 3, 15, 5, 1, 13, 12, 7, 11, 4, 2, 8],
+    [13, 7, 0, 9, 3, 4, 6, 10, 2, 8, 5, 14, 12, 11, 15, 1],
+    [13, 6, 4, 9, 8, 15, 3, 0, 11, 1, 2, 12, 5, 10, 14, 7],
+    [1, 10, 13, 0, 6, 9, 8, 7, 4, 15, 14, 3, 11, 5, 2, 12],
+  ],
+
+  [
+    [7, 13, 14, 3, 0, 6, 9, 10, 1, 2, 8, 5, 11, 12, 4, 15],
+    [13, 8, 11, 5, 6, 15, 0, 3, 4, 7, 2, 12, 1, 10, 14, 9],
+    [10, 6, 9, 0, 12, 11, 7, 13, 15, 1, 3, 14, 5, 2, 8, 4],
+    [3, 15, 0, 6, 10, 1, 13, 8, 9, 4, 5, 11, 12, 7, 2, 14],
+  ],
+
+  [
+    [2, 12, 4, 1, 7, 10, 11, 6, 8, 5, 3, 15, 13, 0, 14, 9],
+    [14, 11, 2, 12, 4, 7, 13, 1, 5, 0, 15, 10, 3, 9, 8, 6],
+    [4, 2, 1, 11, 10, 13, 7, 8, 15, 9, 12, 5, 6, 3, 0, 14],
+    [11, 8, 12, 7, 1, 14, 2, 13, 6, 15, 0, 9, 10, 4, 5, 3],
+  ],
+
+  [
+    [12, 1, 10, 15, 9, 2, 6, 8, 0, 13, 3, 4, 14, 7, 5, 11],
+    [10, 15, 4, 2, 7, 12, 9, 5, 6, 1, 13, 14, 0, 11, 3, 8],
+    [9, 14, 15, 5, 2, 8, 12, 3, 7, 0, 4, 10, 1, 13, 11, 6],
+    [4, 3, 2, 12, 9, 5, 15, 10, 11, 14, 1, 7, 6, 0, 8, 13],
+  ],
+
+  [
+    [4, 11, 2, 14, 15, 0, 8, 13, 3, 12, 9, 7, 5, 10, 6, 1],
+    [13, 0, 11, 7, 4, 9, 1, 10, 14, 3, 5, 12, 2, 15, 8, 6],
+    [1, 4, 11, 13, 12, 3, 7, 14, 10, 15, 6, 8, 0, 5, 9, 2],
+    [6, 11, 13, 8, 1, 4, 10, 7, 9, 5, 0, 15, 14, 2, 3, 12],
+  ],
+
+  [
+    [13, 2, 8, 4, 6, 15, 11, 1, 10, 9, 3, 14, 5, 0, 12, 7],
+    [1, 15, 13, 8, 10, 3, 7, 4, 12, 5, 6, 11, 0, 14, 9, 2],
+    [7, 11, 4, 1, 9, 12, 14, 2, 0, 6, 10, 13, 15, 3, 5, 8],
+    [2, 1, 14, 7, 4, 10, 8, 13, 15, 12, 9, 0, 3, 5, 6, 11],
+  ],
+];
+
+// # Final Permutation Table
+const final_perm = [
+  40, 8, 48, 16, 56, 24, 64, 32, 39, 7, 47, 15, 55, 23, 63, 31, 38, 6, 46, 14,
+  54, 22, 62, 30, 37, 5, 45, 13, 53, 21, 61, 29, 36, 4, 44, 12, 52, 20, 60, 28,
+  35, 3, 43, 11, 51, 19, 59, 27, 34, 2, 42, 10, 50, 18, 58, 26, 33, 1, 41, 9,
+  49, 17, 57, 25,
+];
+
+const encrypt = (pt, rkb, rk) => {
+  pt = hex2bin(pt);
+  // Initial Permutation
+  pt = permute(pt, initial_perm, 64);
+  console.log("After initial permutation", bin2hex(pt));
+  // Splitting
+  let left = pt.slice(0, 32);
+  let right = pt.slice(32, 64);
+  for (let i = 0; i < 16; i++) {
+    //  Expansion D-box: Expanding the 32 bits data into 48 bits
+    let right_expanded = permute(right, exp_d, 48);
+    // XOR RoundKey[i] and right_expanded
+    let xor_x = xor(right_expanded, rkb[i]);
+    // S-boxex: substituting the value from s-box table by calculating row and column
+    let sbox_str = "";
+    for (let j = 0; j < 8; j++) {
+      let row = bin2dec(xor_x[j * 6] + xor_x[j * 6 + 5]);
+      let col = bin2dec(
+        xor_x[j * 6 + 1] +
+          xor_x[j * 6 + 2] +
+          xor_x[j * 6 + 3] +
+          xor_x[j * 6 + 4]
+      );
+      let val = sbox[j][row][col];
+      sbox_str = sbox_str + dec2bin(val);
+    }
+    // Straight D-box: After substituting rearranging the bits
+    sbox_str = permute(sbox_str, per, 32);
+    // XOR left and sbox_str
+    let result = xor(left, sbox_str);
+    left = result;
+    // Swapper
+    if (i !== 15) {
+      left = right;
+      right = left;
+    }
+    console.log(
+      "Round ",
+      i + 1,
+      " ",
+      bin2hex(left),
+      " ",
+      bin2hex(right),
+      " ",
+      rk[i]
+    );
+
+    // Combination
+    let combine = left + right;
+    // Final permutation: final rearranging of bits to get cipher text
+    let cipher_text = permute(combine, final_perm, 64);
+    return cipher_text;
+  }
+  return ciphertext;
+};
 
 const sinhKhoaK_DES = (a, b) => {};
 
 const maHoaDES = (plaintext = "", key) => {
-  if (typeof key !== "number") {
-    throw new Error("Tham số đầu vào không h��p lệ");
-  }
   plaintext = plaintext.trim();
 
   let ciphertext = "";
-
-  for (let i = 0; i < plaintext.length; i++) {
-    const index = VIETNAMESE_ALPHABET.indexOf(plaintext[i]);
-    if (index === -1) {
-      ciphertext += plaintext[i];
-    } else {
-      const newIndex = (index + key) % N;
-      ciphertext += VIETNAMESE_ALPHABET[newIndex];
-    }
-  }
 
   return ciphertext;
 };
@@ -326,7 +226,8 @@ class DES {
 }
 
 // Định nghĩa khóa key DES và bản rõ plaintext
-const key = "0123456789abcdef";
+// const key = "0123456789abcdef";
+const key = "123";
 const plaintext = "Hello, Dũng!";
 
 // Thực hiện mã hõa DES
