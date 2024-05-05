@@ -1,73 +1,111 @@
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+import {
+  VIETNAMESE_ALPHABET,
+  sinhSoNgauNhien,
+  sinhSoNguyenToNgauNhien,
+} from "./helper.js";
+import a_mu_b_mod_n from "./a_mu_b_mod_n.js";
+import phanTuNghichDao from "./phanTuNghichDao.js";
 
-function gcd(a, b) {
-  if (b === 0) return a;
-  return gcd(b, a % b);
-}
+const sinhKhoa = () => {
+  const p = sinhSoNguyenToNgauNhien();
+  const a = sinhSoNgauNhien();
+  const x = sinhSoNgauNhien();
 
-function genKey(q) {
-  let key = getRandomInt(Math.pow(10, 20), q);
-  while (gcd(q, key) !== 1) {
-    key = getRandomInt(Math.pow(10, 20), q);
-  }
-  return key;
-}
+  const y = a_mu_b_mod_n(a, x, p);
 
-function power(a, b, c) {
-  let x = 1;
-  let y = a % c;
-  while (b > 0) {
-    if (b % 2 !== 0) {
-      x = (x * y) % c;
+  console.log("Khoa ca nhan :>> ", { p, a, x });
+  console.log("Khoa cong khai :>> ", { p, a, y });
+
+  return { privateKey: { p, a, x }, publicKey: { p, a, y } };
+};
+
+const maHoaEl = (M, { p, a, y }) => {
+  if (typeof M === "string") {
+    let C_array = [];
+
+    for (let i = 0; i < M.length; i++) {
+      let k = sinhSoNgauNhien();
+
+      while (k < 1 || k > p - 1) {
+        k = sinhSoNgauNhien();
+      }
+      const K = a_mu_b_mod_n(y, k, p);
+
+      const C_1 = a_mu_b_mod_n(a, k, p);
+
+      let M_index = VIETNAMESE_ALPHABET.indexOf(M[i]);
+
+      let C_2 = ((K % p) * (M_index % p)) % p;
+      if (C_2 < 0) C_2 = p + C_2;
+
+      C_array.push({ C_1, C_2 });
     }
-    y = (y * y) % c;
-    b = Math.floor(b / 2);
+
+    return C_array;
   }
-  return x % c;
-}
 
-function encrypt(msg, q, h, g) {
-  const enMsg = [];
-  const k = genKey(q);
-  const s = power(h, k, q);
-  const p = power(g, k, q);
-  for (let i = 0; i < msg.length; i++) {
-    enMsg.push(msg.charCodeAt(i));
+  let k = sinhSoNgauNhien();
+  while (k < 1 || k > p - 1) {
+    k = sinhSoNgauNhien();
   }
-  console.log("g^k used: ", p);
-  console.log("g^ak used: ", s);
-  for (let i = 0; i < enMsg.length; i++) {
-    enMsg[i] = s * enMsg[i];
+
+  console.log("\nk :>> ", k);
+
+  const K = a_mu_b_mod_n(y, k, p);
+
+  const C_1 = a_mu_b_mod_n(a, k, p);
+
+  let C_2 = ((K % p) * (M % p)) % p;
+
+  return { C_1, C_2 };
+};
+
+const giaiMaEl = ({ C_1, C_2 }, { p, a, x }) => {
+  const K = a_mu_b_mod_n(C_1, x, p);
+  const tmp = phanTuNghichDao(K, p);
+
+  const m = ((C_2 % p) * (tmp % p)) % p;
+
+  return m;
+};
+
+const giaiMaElString = (C_array, { p, a, x }) => {
+  let plaintext = "";
+
+  for (let i = 0; i < C_array.length; i++) {
+    const K = a_mu_b_mod_n(C_array[i].C_1, x, p);
+
+    const tmp = phanTuNghichDao(K, p);
+
+    const m = ((C_array[i].C_2 % p) * (tmp % p)) % p;
+
+    if (!VIETNAMESE_ALPHABET[m]) {
+      plaintext += " ";
+      continue;
+    }
+    plaintext += VIETNAMESE_ALPHABET[m];
   }
-  return { enMsg, p };
-}
 
-function decrypt(enMsg, p, key, q) {
-  const drMsg = [];
-  const h = power(p, key, q);
-  for (let i = 0; i < enMsg.length; i++) {
-    drMsg.push(String.fromCharCode(Math.floor(enMsg[i] / h)));
-  }
-  return drMsg.join("");
-}
+  return plaintext;
+};
 
-function main() {
-  const msg = "encryption";
-  console.log("Original Message:", msg);
+const thongDiepM = 13;
 
-  const q = getRandomInt(Math.pow(10, 20), Math.pow(10, 50));
-  const g = getRandomInt(2, q);
+const { privateKey, publicKey } = sinhKhoa();
 
-  const key = genKey(q);
-  const h = power(g, key, q);
-  console.log("g used:", g);
-  console.log("g^a used:", h);
+const C = maHoaEl(thongDiepM, publicKey);
 
-  const { enMsg, p } = encrypt(msg, q, h, g);
-  const drMsg = decrypt(enMsg, p, key, q);
-  console.log("Decrypted Message:", drMsg);
-}
+console.log("\nThông điệp: ", thongDiepM);
+console.log("\nBan ma:: ", C);
+console.log("Ban giai ma:: ", giaiMaEl(C, privateKey));
 
-main();
+const thongDiepString = "Dương Văn Dũng";
+
+// const { privateKey, publicKey } = sinhKhoa();
+
+const C_string_encrypt = maHoaEl(thongDiepString, publicKey);
+
+console.log("\nThông điệp: ", thongDiepString);
+console.log("\nBan ma:: ", C_string_encrypt);
+
+console.log("Ban giai ma:: ", giaiMaElString(C_string_encrypt, privateKey));

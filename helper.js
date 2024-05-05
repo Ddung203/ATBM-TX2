@@ -39,6 +39,14 @@ const sinhSoNguyenToNgauNhien = () => {
   return randomNumber; // number
 };
 
+const sinhSoNgauNhien = () => {
+  let min = 2;
+  let max = 99;
+  let randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+
+  return randomNumber; // number
+};
+
 // Hàm chuyển đổi từ hệ hex sang bin
 
 const hex2bin = (s) => {
@@ -168,4 +176,5 @@ export {
   he10sang2,
   VIETNAMESE_ALPHABET,
   N,
+  sinhSoNgauNhien,
 };
