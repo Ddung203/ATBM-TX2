@@ -15,6 +15,8 @@ const sinhKhoaK_Affine = () => {
     a = sinhSoNguyenToNgauNhien();
   }
 
+  console.log("kiemTra2soNTCungNhau(a, N) :>> ", kiemTra2soNTCungNhau(a, N));
+
   console.log("sinhKhoaK_Affine: K = {a,b} = ", { a, b });
 
   return { a, b };
@@ -43,21 +45,27 @@ const maHoaAffine = (plaintext = "", a, b) => {
 };
 
 const giaMaAffine = (ciphertext = "", a, b) => {
-  if (typeof a !== "number" || typeof b !== "number") {
+  if (typeof a !== "number" || typeof b !== "number" || a === 0 || b === 0) {
     throw new Error("Tham số đầu vào không hợp lệ");
   }
+
   ciphertext = ciphertext.trim();
   let plaintext = "";
 
+  const phanTuNghichDaoA = phanTuNghichDao(a, N);
+
   for (let i = 0; i < ciphertext.length; i++) {
     const index = VIETNAMESE_ALPHABET.indexOf(ciphertext[i]);
-    // console.log("index :>> ", index);
     if (index === -1) {
       plaintext += ciphertext[i];
     } else {
-      const newIndex = ((index - b) * phanTuNghichDao(a, N)) % N;
-      // console.log("newIndex :>> ", newIndex);
-      console.log("plaintext :>> ", plaintext);
+      let newIndex = (index - b) * phanTuNghichDaoA;
+
+      //
+      while (newIndex < 0) {
+        newIndex += N;
+      }
+      newIndex %= N;
       plaintext += VIETNAMESE_ALPHABET[newIndex];
     }
   }
@@ -66,7 +74,7 @@ const giaMaAffine = (ciphertext = "", a, b) => {
 
 console.log("=== Mã hóa ===");
 const chuoiCanMaHoaAffine = "Dương Văn Dũng, Bắc Giang, Việt Nam";
-const { a, b } = sinhKhoaK_Affine(); // Tạo khóa K = {a,b} thoa man gcd(a, N) = 1, N = 178
+const { a, b } = sinhKhoaK_Affine(); // Tạo khóa K = {a,b} thoa man gcd(a, N) = 1, với N = 178
 
 const c1 = maHoaAffine(chuoiCanMaHoaAffine, a, b);
 console.log(`maHoaAffine(${chuoiCanMaHoaAffine}, ${a}, ${b}) :: `, c1);

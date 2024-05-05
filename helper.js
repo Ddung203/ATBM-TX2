@@ -28,15 +28,6 @@ const ktraSoNguyenTo = (number) => {
 };
 
 //! 6.1 - Hàm tạo số nguyên tố có 6 chữ số ngẫu nhiên
-// const sinhSoNguyenToNgauNhien = () => {
-//   let min = 100000;
-//   let max = 999999;
-//   let randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-//   while (!ktraSoNguyenTo(randomNumber)) {
-//     randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-//   }
-//   return randomNumber;
-// };
 
 const sinhSoNguyenToNgauNhien = () => {
   let min = 1000;
@@ -45,12 +36,13 @@ const sinhSoNguyenToNgauNhien = () => {
   while (!ktraSoNguyenTo(randomNumber)) {
     randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
   }
-  return randomNumber;
+  return randomNumber; // number
 };
 
 // Hàm chuyển đổi từ hệ hex sang bin
 
 const hex2bin = (s) => {
+  // string
   const mp = {
     0: "0000",
     1: "0001",
@@ -73,11 +65,12 @@ const hex2bin = (s) => {
   for (let i = 0; i < s.length; i++) {
     bin += mp[s[i]];
   }
-  return bin;
+  return bin; // string
 };
 
 // Hàm chuyển đổi từ hệ bin sang hex
 function bin2hex(s) {
+  // string
   const mp = {
     "0000": "0",
     "0001": "1",
@@ -105,11 +98,12 @@ function bin2hex(s) {
     ch += s[i + 3];
     hex += mp[ch];
   }
-  return hex;
+  return hex; // string
 }
 
 // Hàm chuyển đổi từ hệ bin sang thập phân
 function bin2dec(binary) {
+  // number
   let decimal = 0;
   let i = 0;
   while (binary !== 0) {
@@ -118,10 +112,11 @@ function bin2dec(binary) {
     binary = Math.floor(binary / 10);
     i++;
   }
-  return decimal;
+  return decimal; // number
 }
 
 function binaryToDecimal(binaryNumber) {
+  // string
   let decimalNumber = 0;
   let base = 1; // Base bắt đầu từ 2^0 = 1
 
@@ -135,10 +130,11 @@ function binaryToDecimal(binaryNumber) {
     base *= 2;
   }
 
-  return decimalNumber;
+  return decimalNumber; // number
 }
 
 function he10sang2(number) {
+  // number
   if (number === 0) {
     return "0";
   }
@@ -151,13 +147,14 @@ function he10sang2(number) {
   }
 
   // return Number(binary);
-  return binary;
+  return binary; // string
 }
 
 const VIETNAMESE_ALPHABET =
   "aAáÁạẠàÀảẢãÃăĂắẮặẶằẰẳẲẵẴâÂấẤậẬầẦẩẨẫẪbBcCdDđĐeEéÉẹẸèÈẻẺẽẼêÊếẾệỆềỀểỂễỄgGhHiIíÍịỊìÌỉỈĩĨkKlLmMnNoOóÓọỌòÒỏỎõÕôÔốỐộỘồỒổỔỗỖơƠớỚợỢờỜởỞỡỠpPqQrRsStTuUúÚụỤùÙủỦũŨưƯứỨựỰừỪửỬữỮvVxXyYýÝỵỴỳỲỷỶỹỸ"; // Z_178
 
 const N = VIETNAMESE_ALPHABET.length;
+// console.log("N :>> ", N);
 
 export {
   gcd,

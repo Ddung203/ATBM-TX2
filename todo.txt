@@ -1,0 +1,9 @@
+DES
+
+AES
+
+elgamal
+
+https://www.geeksforgeeks.org/elgamal-encryption-algorithm/
+
+https://github.com/kevinhaeni/Crypto.Cipher.ElGamal.Cpp/blob/master/Crypto.ElGamal.Cpp/ElGamal.cpp

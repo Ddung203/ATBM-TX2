@@ -43,8 +43,8 @@ const phanTuNghichDao = (a, b) => {
   return x_i_tru_1;
 };
 
-console.log("phanTuNghichDao(18,23) = 9 =  ", phanTuNghichDao(18, 23));
-console.log("phanTuNghichDao(35,79) = -9 | 70 =  ", phanTuNghichDao(35, 79));
+// console.log("phanTuNghichDao(18,23) = 9 = ", phanTuNghichDao(18, 23));
+// console.log("phanTuNghichDao(35,79) = -9 | 70 = ", phanTuNghichDao(35, 79));
 //console.log("phanTuNghichDao(6,6) =  ", phanTuNghichDao(6, 8)); // Không thể tìm phần tử nghịch đảo vì không phải 2 số nguyên tố cùng nhau
 
 export default phanTuNghichDao;

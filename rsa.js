@@ -13,7 +13,7 @@ import a_mu_b_mod_n from "./a_mu_b_mod_n.js";
 const p = sinhSoNguyenToNgauNhien();
 const q = sinhSoNguyenToNgauNhien();
 
-console.log("{p,q} = :>> ", { p, q });
+console.log("{p,q} = ", { p, q });
 
 const n = p * q;
 
@@ -22,11 +22,11 @@ const phi = (p - 1) * (q - 1);
 let e = sinhSoNguyenToNgauNhien(phi);
 if (!kiemTra2soNTCungNhau(e, phi)) e = sinhSoNguyenToNgauNhien();
 
-console.log("e = ", e);
+console.log("\ne = ", e);
 
 const d = phanTuNghichDao(e, phi);
 
-console.log("Public key: ", { n, e });
+console.log("\nPublic key: ", { n, e });
 console.log("Private key: ", { n, d });
 
 const VIETNAMESE_ALPHABET_FOR_RSA = VIETNAMESE_ALPHABET + "_"; // 179
@@ -69,27 +69,23 @@ const giaiMaRSA = (ciphertext, isBin = false) => {
   }
 
   if (isBin) {
-    // console.log("typeof ciphertext :>> ", typeof ciphertext);
-
-    const at = Number(ciphertext);
-
-    ciphertext = binaryToDecimal(at);
-    return a_mu_b_mod_n(ciphertext, e, n).toString(); // c
+    ciphertext = binaryToDecimal(ciphertext);
+    return he10sang2(a_mu_b_mod_n(ciphertext, d, n)); // m
   }
   return a_mu_b_mod_n(ciphertext, d, n); // m
 };
 
 // TH 1: m = 32
-// console.log("\n=== TH 1 ==");
+console.log("\n=== TH 1 ==");
 
-// const m = 32;
-// console.log("m input :: ", m);
+const m = 10;
+console.log("m input :: ", m);
 
-// const C = maHoaRSA(m);
-// console.log("C :: ", C);
+const C = maHoaRSA(m);
+console.log("C :: ", C);
 
-// const M = giaiMaRSA(C);
-// console.log("M :: ", M);
+const M = giaiMaRSA(C);
+console.log("M :: ", M);
 
 // TH 2: m = 1010
 console.log("\n=== TH 2 ==");
@@ -104,12 +100,12 @@ const M_maNhiPhan = giaiMaRSA(C_maNhiPhan, true);
 console.log("M_maNhiPhan :: ", M_maNhiPhan);
 
 // TH 3:
-// console.log("\n=== TH 3 ==");
-// const input = "Dương Văn Dũng";
+console.log("\n=== TH 3 ==");
+const input = "Dương Văn Dũng";
+console.log("input :>> ", input);
 
-// console.log("input :>> ", input);
-// const C_2 = maHoaRSA(input);
-// console.log("C :: ", C_2);
+const C_2 = maHoaRSA(input);
+console.log("C :: ", C_2);
 
-// const M_2 = giaiMaRSA(C_2);
-// console.log("M :: ", M_2);
+const M_2 = giaiMaRSA(C_2);
+console.log("M :: ", M_2);

@@ -12,7 +12,6 @@ const a_mu_b_mod_n = (a, b, n) => {
     return a % n;
   }
 
-  // console.log("he10sang2(b) :>> ", he10sang2(b));
   const binaryArray = he10sang2(b).split("");
 
   let f = 1;
@@ -24,12 +23,11 @@ const a_mu_b_mod_n = (a, b, n) => {
     }
   }
 
-  // console.log("typeof f :>> ", typeof f);
-  return f;
+  return f; // number
 };
 
-// console.log(a_mu_b_mod_n(5, 37, 23));
-// console.log(a_mu_b_mod_n(7, 560, 561));
-// console.log(a_mu_b_mod_n(3, 5, 5));
+// console.log(a_mu_b_mod_n(5, 37, 23)); // 19
+// console.log(a_mu_b_mod_n(7, 560, 561)); // 1
+// console.log(a_mu_b_mod_n(3, 5, 5)); // = 3 mod 5 = 3
 
 export default a_mu_b_mod_n;
