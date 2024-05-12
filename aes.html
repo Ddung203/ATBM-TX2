@@ -7,18 +7,27 @@
       content="width=device-width, initial-scale=1.0"
     />
     <title>CryptoJS Example</title>
+    <style>
+      body {
+        background-color: #252626;
+      }
+    </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
   </head>
   <body>
-    <!-- Nội dung HTML của bạn ở đây -->
     <script>
-      // Mã JavaScript của bạn sử dụng CryptoJS ở đây
-      // Ví dụ:
-      var encryptedMessage = CryptoJS.AES.encrypt(
-        "Xin chào, thế giới!",
-        "khóa bí mật"
+      const secretKey = "4FC7EB652128DF2F";
+      const message = "Xin chào, thế giới!";
+      const encryptedMessage = CryptoJS.AES.encrypt(
+        message,
+        secretKey
       ).toString();
-      console.log(encryptedMessage);
+      console.log("Tin nhắn đã được mã hóa:", encryptedMessage);
+
+      // Giải mã tin nhắn
+      const decryptedBytes = CryptoJS.AES.decrypt(encryptedMessage, secretKey);
+      const decryptedMessage = decryptedBytes.toString(CryptoJS.enc.Utf8);
+      console.log("Tin nhắn đã được giải mã:", decryptedMessage);
     </script>
   </body>
 </html>
