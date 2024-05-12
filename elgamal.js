@@ -13,8 +13,8 @@ const sinhKhoa = () => {
 
   const y = a_mu_b_mod_n(a, x, p);
 
-  console.log("Khoa ca nhan :>> ", { p, a, x });
-  console.log("Khoa cong khai :>> ", { p, a, y });
+  console.log("\n1. Khoa ca nhan :>> ", { p, a, x });
+  console.log("2. Khoa cong khai :>> ", { p, a, y });
 
   return { privateKey: { p, a, x }, publicKey: { p, a, y } };
 };
@@ -49,7 +49,7 @@ const maHoaEl = (M, { p, a, y }) => {
     k = sinhSoNgauNhien();
   }
 
-  console.log("\nk :>> ", k);
+  // console.log("\nk :>> ", k);
 
   const K = a_mu_b_mod_n(y, k, p);
 
@@ -95,17 +95,18 @@ const { privateKey, publicKey } = sinhKhoa();
 
 const C = maHoaEl(thongDiepM, publicKey);
 
-console.log("\nThông điệp: ", thongDiepM);
+console.log("\n3. Thông điệp: ", thongDiepM);
 console.log("\nBan ma:: ", C);
 console.log("Ban giai ma:: ", giaiMaEl(C, privateKey));
 
+//!
 const thongDiepString = "Dương Văn Dũng";
 
 // const { privateKey, publicKey } = sinhKhoa();
 
 const C_string_encrypt = maHoaEl(thongDiepString, publicKey);
 
-console.log("\nThông điệp: ", thongDiepString);
+console.log("\n4. Thông điệp: ", thongDiepString);
 console.log("\nBan ma:: ", C_string_encrypt);
 
 console.log("Ban giai ma:: ", giaiMaElString(C_string_encrypt, privateKey));

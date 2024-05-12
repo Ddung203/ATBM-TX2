@@ -52,15 +52,15 @@ const giaMa = (ciphertext = "", key) => {
   return plaintext;
 };
 
-const plaintext1 = "HANOI";
+const plaintext1 = "A";
 const plaintext2 = "Việt Nam";
 const plaintext3 = "Dương Văn Dũng";
 
-const ciphertext1 = maHoa(plaintext1, 3);
+const ciphertext1 = maHoa(plaintext1, 1);
 const ciphertext2 = maHoa(plaintext2, 5);
 const ciphertext3 = maHoa(plaintext3, 7);
 
-const plaintext_1 = giaMa(ciphertext1, 3);
+const plaintext_1 = giaMa(ciphertext1, 1);
 const plaintext_2 = giaMa(ciphertext2, 5);
 const plaintext_3 = giaMa(ciphertext3, 7);
 
@@ -70,6 +70,6 @@ console.log(`maHoa(${plaintext2},  5) :>> `, ciphertext2);
 console.log(`maHoa(${plaintext3},  7) :>> `, ciphertext3);
 
 console.log("=== Giải mã ===");
-console.log(`giaMa(${ciphertext1}, 7); :>> `, plaintext_1);
-console.log(`giaMa(${ciphertext2}, 7); :>> `, plaintext_2);
+console.log(`giaMa(${ciphertext1}, 3); :>> `, plaintext_1);
+console.log(`giaMa(${ciphertext2}, 5); :>> `, plaintext_2);
 console.log(`giaMa(${ciphertext3}, 7); :>> `, plaintext_3);

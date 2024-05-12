@@ -15,7 +15,7 @@ const sinhKhoaK_Affine = () => {
     a = sinhSoNguyenToNgauNhien();
   }
 
-  console.log("kiemTra2soNTCungNhau(a, N) :>> ", kiemTra2soNTCungNhau(a, N));
+  // console.log("kiemTra2soNTCungNhau(a, N) :>> ", kiemTra2soNTCungNhau(a, N));
 
   console.log("sinhKhoaK_Affine: K = {a,b} = ", { a, b });
 
@@ -73,12 +73,16 @@ const giaMaAffine = (ciphertext = "", a, b) => {
 };
 
 console.log("=== Mã hóa ===");
+
 const chuoiCanMaHoaAffine = "Dương Văn Dũng, Bắc Giang, Việt Nam";
-const { a, b } = sinhKhoaK_Affine(); // Tạo khóa K = {a,b} thoa man gcd(a, N) = 1, với N = 178
+
+// Tạo khóa K = {a,b} thoa man gcd(a, N) = 1, với N = 178
+const { a, b } = sinhKhoaK_Affine();
 
 const c1 = maHoaAffine(chuoiCanMaHoaAffine, a, b);
 console.log(`maHoaAffine(${chuoiCanMaHoaAffine}, ${a}, ${b}) :: `, c1);
 
 console.log("\n=== Giải mã ===");
+
 const p1 = giaMaAffine(c1, a, b);
 console.log(`giaMaAffine(${c1}, ${a}, ${b}) :: `, p1);
